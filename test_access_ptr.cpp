@@ -145,6 +145,26 @@ void test_access_ptr_equality() {
     assert(!(nullptr != ap2));
 }
 
+void test_access_ptr_can_be_reset() {
+    class A {};
+
+    A a;
+
+    jss::access_ptr<A> ap;
+
+    ap.reset(&a);
+    assert(ap.get() == &a);
+    assert(&*ap == &a);
+
+    ap.reset();
+    assert(ap.get() == nullptr);
+
+    ap.reset(&a);
+    assert(ap.get() == &a);
+    ap.reset(nullptr);
+    assert(ap.get() == nullptr);
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -156,4 +176,5 @@ int main() {
     test_access_ptr_can_be_assigned();
     test_access_ptr_can_be_swapped();
     test_access_ptr_equality();
+    test_access_ptr_can_be_reset();
 }
