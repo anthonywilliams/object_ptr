@@ -247,6 +247,16 @@ void test_access_ptr_can_be_explicitly_converted_to_raw_pointer() {
     static_assert(!std::is_convertible<jss::access_ptr<int>, int *>::value);
 }
 
+void test_access_ptr_has_hash() {
+    class X {};
+
+    X x;
+
+    jss::access_ptr<X> ap(&x);
+
+    assert(std::hash<jss::access_ptr<X>>()(ap) == std::hash<X *>()(&x));
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -263,4 +273,5 @@ int main() {
     test_access_ptr_has_ordering_comparisons();
     test_access_ptr_implicit_conversions();
     test_access_ptr_can_be_explicitly_converted_to_raw_pointer();
+    test_access_ptr_has_hash();
 }

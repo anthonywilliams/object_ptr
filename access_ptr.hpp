@@ -85,4 +85,14 @@ namespace jss {
 
 } // namespace jss
 
+namespace std {
+    template <typename T> struct hash<jss::access_ptr<T>> {
+        constexpr size_t operator()(jss::access_ptr<T> const &p) const
+            noexcept {
+            return hash<T *>()(p.get());
+        }
+    };
+
+} // namespace std
+
 #endif
