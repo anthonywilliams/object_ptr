@@ -30,6 +30,16 @@ namespace jss {
             std::swap(ptr, other.ptr);
         }
 
+        friend constexpr bool
+        operator==(access_ptr const &lhs, access_ptr const &rhs) noexcept {
+            return lhs.ptr == rhs.ptr;
+        }
+
+        friend constexpr bool
+        operator!=(access_ptr const &lhs, access_ptr const &rhs) noexcept {
+            return lhs.ptr != rhs.ptr;
+        }
+
     private:
         T *ptr;
     };

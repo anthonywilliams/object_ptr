@@ -116,6 +116,35 @@ void test_access_ptr_can_be_swapped() {
     assert(ap2.get() == &y2);
 }
 
+void test_access_ptr_equality() {
+    class Z {};
+
+    Z z1, z2;
+
+    jss::access_ptr<Z> ap1(&z1), ap2(&z2);
+
+    static_assert((std::is_same<decltype(ap1 == ap2), bool>::value));
+    assert(ap1 != ap2);
+    assert(!(ap1 == ap2));
+
+    ap1= ap2;
+
+    assert(ap1 == ap2);
+    assert(!(ap1 != ap2));
+
+    assert(ap1 != nullptr);
+    assert(nullptr != ap1);
+    assert(!(ap1 == nullptr));
+    assert(!(nullptr == ap1));
+
+    ap2= nullptr;
+
+    assert(ap2 == nullptr);
+    assert(nullptr == ap2);
+    assert(!(ap2 != nullptr));
+    assert(!(nullptr != ap2));
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -126,4 +155,5 @@ int main() {
     test_access_ptr_can_be_copied();
     test_access_ptr_can_be_assigned();
     test_access_ptr_can_be_swapped();
+    test_access_ptr_equality();
 }
