@@ -62,6 +62,43 @@ void test_access_ptr_can_be_converted_to_bool() {
     assert(!static_cast<bool>(ap3));
 }
 
+void test_access_ptr_can_be_copied() {
+    class X {};
+
+    static_assert(
+        std::is_nothrow_copy_constructible<jss::access_ptr<X>>::value);
+
+    X x;
+
+    jss::access_ptr<X> ap(&x);
+    jss::access_ptr<X> ap2(ap);
+
+    assert(ap.get() == &x);
+    assert(ap2.get() == &x);
+    assert(ap);
+    assert(ap2);
+}
+
+void test_access_ptr_can_be_assigned() {
+    class X {};
+
+    static_assert(std::is_nothrow_copy_assignable<jss::access_ptr<X>>::value);
+
+    X x;
+
+    jss::access_ptr<X> ap(&x);
+    jss::access_ptr<X> ap2;
+
+    assert(!ap2);
+
+    ap2= ap;
+
+    assert(ap.get() == &x);
+    assert(ap2.get() == &x);
+    assert(ap);
+    assert(ap2);
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -69,4 +106,6 @@ int main() {
     test_access_ptr_can_be_dereferenced();
     test_access_ptr_has_operator_arrow();
     test_access_ptr_can_be_converted_to_bool();
+    test_access_ptr_can_be_copied();
+    test_access_ptr_can_be_assigned();
 }
