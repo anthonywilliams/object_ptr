@@ -20,7 +20,11 @@ namespace jss {
         constexpr T *operator->() const noexcept {
             return ptr;
         }
-        
+
+        constexpr explicit operator bool() const noexcept {
+            return ptr != nullptr;
+        }
+
     private:
         T *ptr;
     };
