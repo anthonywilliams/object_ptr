@@ -238,6 +238,15 @@ void test_access_ptr_implicit_conversions() {
     assert(ap3 == ap2);
 }
 
+void test_access_ptr_can_be_explicitly_converted_to_raw_pointer() {
+    int x;
+    jss::access_ptr<int> ap(&x);
+
+    assert(static_cast<int *>(ap) == &x);
+
+    static_assert(!std::is_convertible<jss::access_ptr<int>, int *>::value);
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -253,4 +262,5 @@ int main() {
     test_access_ptr_has_not_operator();
     test_access_ptr_has_ordering_comparisons();
     test_access_ptr_implicit_conversions();
+    test_access_ptr_can_be_explicitly_converted_to_raw_pointer();
 }

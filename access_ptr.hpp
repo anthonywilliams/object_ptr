@@ -32,6 +32,10 @@ namespace jss {
             return ptr != nullptr;
         }
 
+        constexpr explicit operator T *() const noexcept {
+            return ptr;
+        }
+
         constexpr bool operator!() const noexcept {
             return !ptr;
         }
