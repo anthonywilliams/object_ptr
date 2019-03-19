@@ -2,6 +2,7 @@
 #define JSS_ACCESS_PTR_HPP
 #include <cstddef>
 #include <utility>
+#include <functional>
 
 namespace jss {
     template <typename T> class access_ptr {
@@ -46,6 +47,23 @@ namespace jss {
         friend constexpr bool
         operator!=(access_ptr const &lhs, access_ptr const &rhs) noexcept {
             return lhs.ptr != rhs.ptr;
+        }
+
+        friend constexpr bool
+        operator<(access_ptr const &lhs, access_ptr const &rhs) noexcept {
+            return std::less<void>()(lhs.ptr, rhs.ptr);
+        }
+        friend constexpr bool
+        operator>(access_ptr const &lhs, access_ptr const &rhs) noexcept {
+            return rhs < lhs;
+        }
+        friend constexpr bool
+        operator<=(access_ptr const &lhs, access_ptr const &rhs) noexcept {
+            return (lhs < rhs) || (lhs == rhs);
+        }
+        friend constexpr bool
+        operator>=(access_ptr const &lhs, access_ptr const &rhs) noexcept {
+            return rhs <= lhs;
         }
 
     private:

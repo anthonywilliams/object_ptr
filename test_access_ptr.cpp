@@ -178,6 +178,43 @@ void test_access_ptr_has_not_operator() {
     assert(!ap3);
 }
 
+void test_access_ptr_has_ordering_comparisons() {
+    int x[2];
+
+    jss::access_ptr<int> ap1(&x[0]), ap2(&x[1]);
+
+    assert(ap1 < ap2);
+    assert(ap1 <= ap2);
+    assert(!(ap2 < ap1));
+    assert(!(ap2 <= ap1));
+    assert(ap2 > ap1);
+    assert(ap2 >= ap1);
+    assert(!(ap1 > ap2));
+    assert(!(ap1 >= ap2));
+
+    jss::access_ptr<int> ap3(ap1);
+
+    assert(!(ap1 < ap3));
+    assert(!(ap3 < ap1));
+    assert(ap1 <= ap3);
+    assert(ap3 <= ap1);
+    assert(!(ap1 > ap3));
+    assert(!(ap3 > ap1));
+    assert(ap1 >= ap3);
+    assert(ap3 >= ap1);
+
+    jss::access_ptr<int> np;
+
+    assert((np < ap1) != (ap1 < np));
+    assert((np > ap1) != (ap1 > np));
+    assert((np < ap1) == (ap1 > np));
+    assert((np > ap1) == (ap1 < np));
+    assert((np <= ap1) == (ap1 >= np));
+    assert((np >= ap1) == (ap1 <= np));
+    assert((np >= ap1) == (ap1 < np));
+    assert((np <= ap1) == (ap1 > np));
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -191,4 +228,5 @@ int main() {
     test_access_ptr_equality();
     test_access_ptr_can_be_reset();
     test_access_ptr_has_not_operator();
+    test_access_ptr_has_ordering_comparisons();
 }
