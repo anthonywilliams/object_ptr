@@ -1,6 +1,7 @@
 #ifndef JSS_ACCESS_PTR_HPP
 #define JSS_ACCESS_PTR_HPP
 #include <cstddef>
+#include <utility>
 
 namespace jss {
     template <typename T> class access_ptr {
@@ -25,9 +26,18 @@ namespace jss {
             return ptr != nullptr;
         }
 
+        void swap(access_ptr &other) noexcept {
+            std::swap(ptr, other.ptr);
+        }
+
     private:
         T *ptr;
     };
+
+    template <typename T> void swap(access_ptr<T> &lhs, access_ptr<T> &rhs) {
+        lhs.swap(rhs);
+    }
+
 } // namespace jss
 
 #endif

@@ -99,6 +99,23 @@ void test_access_ptr_can_be_assigned() {
     assert(ap2);
 }
 
+void test_access_ptr_can_be_swapped() {
+    class Y {};
+    Y y1, y2;
+
+    jss::access_ptr<Y> ap1(&y1), ap2(&y2);
+
+    ap1.swap(ap2);
+
+    assert(ap1.get() == &y2);
+    assert(ap2.get() == &y1);
+
+    using std::swap;
+    swap(ap1, ap2);
+    assert(ap1.get() == &y1);
+    assert(ap2.get() == &y2);
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -108,4 +125,5 @@ int main() {
     test_access_ptr_can_be_converted_to_bool();
     test_access_ptr_can_be_copied();
     test_access_ptr_can_be_assigned();
+    test_access_ptr_can_be_swapped();
 }
