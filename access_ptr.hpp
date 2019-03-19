@@ -26,6 +26,10 @@ namespace jss {
             return ptr != nullptr;
         }
 
+        constexpr bool operator!() const noexcept {
+            return !ptr;
+        }
+
         void swap(access_ptr &other) noexcept {
             std::swap(ptr, other.ptr);
         }

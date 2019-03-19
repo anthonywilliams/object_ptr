@@ -165,6 +165,19 @@ void test_access_ptr_can_be_reset() {
     assert(ap.get() == nullptr);
 }
 
+void test_access_ptr_has_not_operator() {
+    int x;
+    jss::access_ptr<int> ap(&x);
+    static_assert(std::is_same<decltype(!ap), bool>::value);
+    assert(!!ap);
+
+    jss::access_ptr<int> ap2;
+    assert(!ap2);
+
+    jss::access_ptr<int> ap3(nullptr);
+    assert(!ap3);
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -177,4 +190,5 @@ int main() {
     test_access_ptr_can_be_swapped();
     test_access_ptr_equality();
     test_access_ptr_can_be_reset();
+    test_access_ptr_has_not_operator();
 }
