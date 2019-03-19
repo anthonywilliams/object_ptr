@@ -215,6 +215,29 @@ void test_access_ptr_has_ordering_comparisons() {
     assert((np <= ap1) == (ap1 > np));
 }
 
+void test_access_ptr_implicit_conversions() {
+    class Base {};
+    class Derived : public Base {};
+
+    Derived d;
+
+    jss::access_ptr<Base> ap(&d);
+
+    assert(ap.get() == &d);
+
+    jss::access_ptr<Derived> ap2(&d);
+    jss::access_ptr<Base> ap3(ap2);
+
+    assert(ap3.get() == &d);
+    assert(ap3 == ap2);
+
+    ap3.reset();
+    ap3= ap2;
+
+    assert(ap3.get() == &d);
+    assert(ap3 == ap2);
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -229,4 +252,5 @@ int main() {
     test_access_ptr_can_be_reset();
     test_access_ptr_has_not_operator();
     test_access_ptr_has_ordering_comparisons();
+    test_access_ptr_implicit_conversions();
 }

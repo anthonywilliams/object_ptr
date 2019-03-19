@@ -11,6 +11,11 @@ namespace jss {
         constexpr access_ptr(std::nullptr_t) noexcept : ptr(nullptr) {}
         constexpr access_ptr(T *ptr_) noexcept : ptr(ptr_) {}
 
+        template <
+            typename U,
+            typename= std::enable_if_t<std::is_convertible<U *, T *>::value>>
+        constexpr access_ptr(access_ptr<U> const &other) : ptr(other.get()) {}
+
         constexpr T *get() const noexcept {
             return ptr;
         }
