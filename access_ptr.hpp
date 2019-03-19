@@ -17,6 +17,10 @@ namespace jss {
             return *ptr;
         }
 
+        constexpr T *operator->() const noexcept {
+            return ptr;
+        }
+        
     private:
         T *ptr;
     };
