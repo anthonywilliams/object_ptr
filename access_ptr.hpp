@@ -7,6 +7,7 @@ namespace jss {
     public:
         constexpr access_ptr() noexcept : ptr(nullptr) {}
         constexpr access_ptr(std::nullptr_t) noexcept : ptr(nullptr) {}
+        constexpr access_ptr(T *ptr_) noexcept : ptr(ptr_) {}
 
         constexpr T *get() const noexcept {
             return ptr;
