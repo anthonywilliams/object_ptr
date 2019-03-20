@@ -269,6 +269,17 @@ void test_access_ptr_can_be_constructed_from_shared_ptr() {
     [&](jss::access_ptr<int> ap3) { assert(ap3.get() == ptr.get()); }(ptr);
 }
 
+void test_access_ptr_can_be_constructed_from_unique_ptr() {
+    auto ptr= std::make_unique<int>();
+    jss::access_ptr<int> ap(ptr);
+    assert(ap.get() == ptr.get());
+
+    jss::access_ptr<int> ap2= ptr;
+    assert(ap2.get() == ptr.get());
+
+    [&](jss::access_ptr<int> ap3) { assert(ap3.get() == ptr.get()); }(ptr);
+}
+
 int main() {
     test_access_ptr_default_constructs_to_null();
     test_access_ptr_can_be_constructed_from_nullptr();
@@ -287,4 +298,5 @@ int main() {
     test_access_ptr_can_be_explicitly_converted_to_raw_pointer();
     test_access_ptr_has_hash();
     test_access_ptr_can_be_constructed_from_shared_ptr();
+    test_access_ptr_can_be_constructed_from_unique_ptr();
 }

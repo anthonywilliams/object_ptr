@@ -13,6 +13,8 @@ namespace jss {
         constexpr access_ptr(T *ptr_) noexcept : ptr(ptr_) {}
         constexpr access_ptr(std::shared_ptr<T> const &ptr_) noexcept :
             ptr(ptr_.get()) {}
+        constexpr access_ptr(std::unique_ptr<T> const &ptr_) noexcept :
+            ptr(ptr_.get()) {}
 
         template <
             typename U,
