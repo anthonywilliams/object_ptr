@@ -1,16 +1,18 @@
 language: cpp
 
-compiler:
-  - clang
-  - gcc
-
 script: make test
 
 matrix:
   include:
+    - os: linux
+      dist: xenial
+      compiler: clang
+      name: "Linux clang 7"
     - os: osx
       osx_image: xcode10.1
+      name: "Macos xcode 10.1"
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -19,7 +21,9 @@ matrix:
             - g++-7
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+      name: "Linux gcc 7"
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -28,7 +32,9 @@ matrix:
             - g++-8
       env:
         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+      name: "Linux gcc 8"
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -37,10 +43,12 @@ matrix:
             - clang-8
       env:
         - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
+      name: "Linux clang 8"
     - os: osx
-      osx_image: xcode10.1
+      osx_image: xcode8
       env:
         - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7"
+      name: "Macos gcc 7"
         
 before_install:
     - eval "${MATRIX_EVAL}"
