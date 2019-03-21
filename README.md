@@ -1,5 +1,7 @@
 # `jss::object_ptr<T>`
 
+[![Build Status](https://travis-ci.com/anthonywilliams/object_ptr.svg?branch=master)](https://travis-ci.com/anthonywilliams/object_ptr)
+
 This is an implementation of a class similar
 to [`std::experimental::observer_ptr`](https://en.cppreference.com/w/cpp/experimental/observer_ptr)
 from the [Library Fundamentals TS v2](http://wg21.link/n4562), but with various improvements
