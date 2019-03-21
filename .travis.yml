@@ -8,6 +8,8 @@ os:
   - linux
   - osx
 
+script: make test
+
 matrix:
   include:
     - os: linux
