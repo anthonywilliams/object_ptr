@@ -44,11 +44,6 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
       name: "Linux clang 8"
-    - os: osx
-      osx_image: xcode8
-      env:
-        - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7"
-      name: "Macos gcc 7"
         
 before_install:
     - eval "${MATRIX_EVAL}"
