@@ -4,6 +4,7 @@
 #include <utility>
 #include <functional>
 #include <memory>
+#include <type_traits>
 
 namespace jss {
     template <typename T> class object_ptr {
