@@ -20,7 +20,8 @@ namespace jss {
         template <
             typename U,
             typename= std::enable_if_t<std::is_convertible<U *, T *>::value>>
-        constexpr object_ptr(object_ptr<U> const &other) : ptr(other.get()) {}
+        constexpr object_ptr(object_ptr<U> const &other) noexcept :
+            ptr(other.get()) {}
 
         constexpr T *get() const noexcept {
             return ptr;
