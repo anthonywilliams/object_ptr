@@ -106,12 +106,12 @@ void test_object_ptr_can_be_swapped() {
 
     jss::object_ptr<Y> ap1(&y1), ap2(&y2);
 
-    ap1.swap(ap2);
+    using std::swap;
+    swap(ap1, ap2);
 
     assert(ap1.get() == &y2);
     assert(ap2.get() == &y1);
 
-    using std::swap;
     swap(ap1, ap2);
     assert(ap1.get() == &y1);
     assert(ap2.get() == &y2);
@@ -280,6 +280,57 @@ void test_object_ptr_can_be_constructed_from_unique_ptr() {
     [&](jss::object_ptr<int> ap3) { assert(ap3.get() == ptr.get()); }(ptr);
 }
 
+class Base {};
+class Derived : public Base {};
+
+void test_object_ptr_can_be_constructed_from_derived_pointer() {
+    Derived d;
+    jss::object_ptr<Base> ptr(&d);
+
+    assert(ptr.get() == &d);
+    assert(ptr == &d);
+
+    jss::object_ptr<Base> ptr2= &d;
+
+    assert(ptr2.get() == &d);
+
+    [&](jss::object_ptr<Base> ap3) { assert(ap3.get() == &d); }(&d);
+}
+
+void test_object_ptr_can_be_constructed_from_shared_ptr_to_derived() {
+    auto ptr= std::make_shared<Derived>();
+    jss::object_ptr<Base> ap(ptr);
+    assert(ap.get() == ptr.get());
+
+    jss::object_ptr<Base> ap2= ptr;
+    assert(ap2.get() == ptr.get());
+
+    [&](jss::object_ptr<Base> ap3) { assert(ap3.get() == ptr.get()); }(ptr);
+}
+
+void test_object_ptr_can_be_constructed_from_unique_ptr_to_derived() {
+    auto ptr= std::make_unique<Derived>();
+    jss::object_ptr<Base> ap(ptr);
+    assert(ap.get() == ptr.get());
+
+    jss::object_ptr<Base> ap2= ptr;
+    assert(ap2.get() == ptr.get());
+
+    [&](jss::object_ptr<Base> ap3) { assert(ap3.get() == ptr.get()); }(ptr);
+}
+
+void test_object_ptr_can_be_constructed_from_object_ptr_to_derived() {
+    Derived d;
+    jss::object_ptr<Derived> ptr= &d;
+    jss::object_ptr<Base> ap(ptr);
+    assert(ap.get() == ptr.get());
+
+    jss::object_ptr<Base> ap2= ptr;
+    assert(ap2.get() == ptr.get());
+
+    [&](jss::object_ptr<Base> ap3) { assert(ap3.get() == ptr.get()); }(ptr);
+}
+
 int main() {
     test_object_ptr_default_constructs_to_null();
     test_object_ptr_can_be_constructed_from_nullptr();
@@ -299,4 +350,8 @@ int main() {
     test_object_ptr_has_hash();
     test_object_ptr_can_be_constructed_from_shared_ptr();
     test_object_ptr_can_be_constructed_from_unique_ptr();
+    test_object_ptr_can_be_constructed_from_derived_pointer();
+    test_object_ptr_can_be_constructed_from_shared_ptr_to_derived();
+    test_object_ptr_can_be_constructed_from_unique_ptr_to_derived();
+    test_object_ptr_can_be_constructed_from_object_ptr_to_derived();
 }

@@ -21,5 +21,5 @@ TEST_EXE=test_object_ptr$(EXE_SUFFIX)
 test: $(TEST_EXE)
 	$(RUN_PREFIX)$(TEST_EXE)
 
-$(TEST_EXE): test_object_ptr.cpp
-	$(CXX) $(CXXFLAGS) $(OUTPUTFLAG)$@ $^
+$(TEST_EXE): test_object_ptr.cpp object_ptr.hpp
+	$(CXX) $(CXXFLAGS) $(OUTPUTFLAG)$@ $<
