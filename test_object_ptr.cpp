@@ -331,6 +331,53 @@ void test_object_ptr_can_be_constructed_from_object_ptr_to_derived() {
     [&](jss::object_ptr<Base> ap3) { assert(ap3.get() == ptr.get()); }(ptr);
 }
 
+void test_static_pointer_cast() {
+    Derived d;
+
+    jss::object_ptr<Base> p(&d);
+
+    auto dp= std::static_pointer_cast<Derived>(p);
+
+    static_assert(
+        std::is_same<decltype(dp), jss::object_ptr<Derived>>::value,
+        "Static pointer cast gives correct type");
+
+    assert(dp.get() == &d);
+}
+
+struct DynamicBase {
+    virtual ~DynamicBase() {}
+};
+struct DynamicDerived : DynamicBase {};
+
+struct DynamicDerived2 : DynamicBase {};
+
+void test_dynamic_pointer_cast() {
+    DynamicDerived d;
+
+    jss::object_ptr<DynamicBase> p(&d);
+
+    auto dp= std::dynamic_pointer_cast<DynamicDerived>(p);
+
+    static_assert(
+        std::is_same<decltype(dp), jss::object_ptr<DynamicDerived>>::value,
+        "Static pointer cast gives correct type");
+
+    assert(dp.get() == &d);
+
+    DynamicDerived2 d2;
+
+    jss::object_ptr<DynamicBase> p2(&d2);
+
+    auto dp2= std::dynamic_pointer_cast<DynamicDerived>(p2);
+
+    static_assert(
+        std::is_same<decltype(dp), jss::object_ptr<DynamicDerived>>::value,
+        "Static pointer cast gives correct type");
+
+    assert(dp2.get() == nullptr);
+}
+
 int main() {
     test_object_ptr_default_constructs_to_null();
     test_object_ptr_can_be_constructed_from_nullptr();
@@ -354,4 +401,6 @@ int main() {
     test_object_ptr_can_be_constructed_from_shared_ptr_to_derived();
     test_object_ptr_can_be_constructed_from_unique_ptr_to_derived();
     test_object_ptr_can_be_constructed_from_object_ptr_to_derived();
+    test_static_pointer_cast();
+    test_dynamic_pointer_cast();
 }

@@ -157,6 +157,23 @@ namespace std {
         }
     };
 
+    template <typename To, typename From>
+    typename std::enable_if<
+        sizeof(decltype(static_cast<To *>(std::declval<From *>()))) != 0,
+        jss::object_ptr<To>>::type
+    static_pointer_cast(jss::object_ptr<From> p) {
+        return static_cast<To *>(p.get());
+    }
+
+    /// Do a dynamic_cast with object_ptr
+    template <typename To, typename From>
+    typename std::enable_if<
+        sizeof(decltype(dynamic_cast<To *>(std::declval<From *>()))) != 0,
+        jss::object_ptr<To>>::type
+    dynamic_pointer_cast(jss::object_ptr<From> p) {
+        return dynamic_cast<To *>(p.get());
+    }
+
 } // namespace std
 
 #endif
