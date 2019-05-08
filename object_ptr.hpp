@@ -13,22 +13,27 @@ namespace jss {
             using false_test= char;
             template <typename T> struct true_test { false_test dummy[2]; };
 
-            static false_test test_op_star(...);
-            static true_test<decltype(*std::declval<Ptr const &>())>
-            test_op_star(Ptr *);
+            template <typename T> static false_test test_op_star(...);
+            template <typename T>
+            static true_test<decltype(*std::declval<T const &>())>
+            test_op_star(T *);
 
-            static false_test test_op_arrow(...);
-            static true_test<decltype(std::declval<Ptr const &>().operator->())>
-            test_op_arrow(Ptr *);
+            template <typename T> static false_test test_op_arrow(...);
+            template <typename T>
+            static true_test<decltype(std::declval<T const &>().operator->())>
+            test_op_arrow(T *);
 
-            static false_test test_get(...);
-            static true_test<decltype(std::declval<Ptr const &>().get())>
-            test_get(Ptr *);
+            template <typename T> static false_test test_get(...);
+            template <typename T>
+            static true_test<decltype(std::declval<T const &>().get())>
+            test_get(T *);
 
             static constexpr bool value=
-                !std::is_same<decltype(test_get(0)), false_test>::value &&
-                !std::is_same<decltype(test_op_arrow(0)), false_test>::value &&
-                !std::is_same<decltype(test_op_star(0)), false_test>::value;
+                !std::is_same<decltype(test_get<Ptr>(0)), false_test>::value &&
+                !std::is_same<
+                    decltype(test_op_arrow<Ptr>(0)), false_test>::value &&
+                !std::is_same<
+                    decltype(test_op_star<Ptr>(0)), false_test>::value;
         };
 
         template <typename Ptr>

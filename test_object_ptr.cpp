@@ -378,6 +378,36 @@ void test_dynamic_pointer_cast() {
     assert(dp2.get() == nullptr);
 }
 
+struct ptr_chosen
+{
+    char dummy;
+};
+
+struct generic_chosen
+{
+    ptr_chosen dummy[ 2 ];
+};
+
+ptr_chosen sfinae_test( jss::object_ptr<int> )
+{
+    return {};
+}
+
+generic_chosen sfinae_test( ... )
+{
+    return {};
+}
+
+void test_sfinae()
+{
+    class NonSmartPointer
+    {
+    };
+
+    assert( sizeof( sfinae_test( NonSmartPointer() ) ) == sizeof( generic_chosen ) );
+}
+
+
 int main() {
     test_object_ptr_default_constructs_to_null();
     test_object_ptr_can_be_constructed_from_nullptr();
@@ -403,4 +433,5 @@ int main() {
     test_object_ptr_can_be_constructed_from_object_ptr_to_derived();
     test_static_pointer_cast();
     test_dynamic_pointer_cast();
+    test_sfinae();
 }
