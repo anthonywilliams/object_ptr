@@ -161,7 +161,7 @@ namespace jss {
         /// Check for inequality
         friend constexpr bool
         operator!=(object_ptr const &lhs, object_ptr const &rhs) noexcept {
-            return lhs.ptr != rhs.ptr;
+            return !(lhs == rhs);
         }
 
         /// a<b provides a total order
